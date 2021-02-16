@@ -1,4 +1,5 @@
 import 'package:desafio_queritel/components/item_card.dart';
+import 'package:desafio_queritel/logic/bloc.dart';
 import 'package:flutter/material.dart';
 
 class ItemList extends StatefulWidget {
@@ -7,7 +8,14 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  final bloc = Block();
+
   @override
+  void initState() {
+    super.initState();
+    bloc.requestProducts();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
