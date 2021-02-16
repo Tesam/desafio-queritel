@@ -121,7 +121,7 @@ class _CartState extends State<Cart> {
       );
     });
 
-    return new Column(children: list);
+    return new ListView(children: list);
   }
 
 }
