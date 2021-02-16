@@ -10,6 +10,29 @@ class ItemCard extends StatelessWidget {
   /// [weight_label]
   /// [pic_url]
   /// [price]
+  ///
+  final String category;
+  final String brand;
+  final String title;
+  final String weight;
+  // ignore: non_constant_identifier_names
+  final String weight_label;
+  // ignore: non_constant_identifier_names
+  final String pic_url;
+  final String price;
+
+  const ItemCard(
+      {Key key,
+      this.category,
+      this.brand,
+      this.title,
+      this.weight,
+      // ignore: non_constant_identifier_names
+      this.weight_label,
+      // ignore: non_constant_identifier_names
+      this.pic_url,
+      this.price})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +55,8 @@ class ItemCard extends StatelessWidget {
                   child: Container(
                     height: 150,
                     child: Image.network(
-                      "https://cdn.shopify.com/s/files/1/0256/8811/3203/products/1887163200_1_900x.jpg?v=1604998275",
-                      fit: BoxFit.cover,
+                      pic_url,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
@@ -42,7 +65,7 @@ class ItemCard extends StatelessWidget {
                   children: [
                     RaisedButton(
                       onPressed: () {},
-                      child: const Text('2', style: TextStyle(fontSize: 20)),
+                      child: const Text('0', style: TextStyle(fontSize: 20)),
                     ),
                     SizedBox(width: 50), // give it width
                     RaisedButton(
@@ -58,7 +81,7 @@ class ItemCard extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Nestle Evaporated Milk 330ml',
+                        title,
                         style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFF191A32),
@@ -71,7 +94,7 @@ class ItemCard extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'USD ' + '2.90',
+                        'USD ' + price,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -85,7 +108,7 @@ class ItemCard extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Pantry',
+                        category,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

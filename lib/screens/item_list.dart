@@ -17,36 +17,49 @@ class _ItemListState extends State<ItemList> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF191A32),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
+    return AnimatedBuilder(
+        animation: bloc,
+        builder: (context, child) {
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color(0xFF191A32),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    // do something
+                  },
+                )
+              ],
             ),
-            onPressed: () {
-              // do something
-            },
-          )
-        ],
-      ),
-      body: Container(
-        // height: MediaQuery.of(context).size.height,
-        // width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Color(0xFF2EC8EA), Color(0xFF9CC017)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter),
-        ),
-        child: Column(
-          children: [
-            ItemCard(),
-          ],
-        ),
-      ),
-    );
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF2EC8EA), Color(0xFF9CC017)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: bloc.products.isEmpty
+                  ? Center(
+                      child: Text('Loading'),
+                    )
+                  : ListView.builder(
+                      itemCount: bloc.products.length,
+                      itemBuilder: (_, index) {
+                        return ItemCard(
+                          title: bloc.products[index].title,
+                          price: bloc.products[index].lider_price.toString(),
+                          category: bloc.products[index].category,
+                          pic_url: bloc.products[index].pic_url,
+                        );
+                      },
+                    ),
+            ),
+          );
+        });
   }
 }

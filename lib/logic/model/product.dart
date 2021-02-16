@@ -7,7 +7,8 @@ class Product {
   final String weight_label;
   // ignore: non_constant_identifier_names
   final String pic_url;
-  final String price;
+  // ignore: non_constant_identifier_names
+  final String lider_price;
 
   Product({
     this.category,
@@ -18,7 +19,8 @@ class Product {
     this.weight_label,
     // ignore: non_constant_identifier_names
     this.pic_url,
-    this.price,
+    // ignore: non_constant_identifier_names
+    this.lider_price,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -29,7 +31,7 @@ class Product {
       weight: json['weight'],
       weight_label: json['weight_label'],
       pic_url: json['pic_url'],
-      price: json['price'],
+      lider_price: json['lider_price'],
     );
   }
 }
