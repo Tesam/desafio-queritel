@@ -11,6 +11,7 @@ class _ItemListState extends State<ItemList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF191A32),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -23,10 +24,20 @@ class _ItemListState extends State<ItemList> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          ItemCard(),
-        ],
+      body: Container(
+        // height: MediaQuery.of(context).size.height,
+        // width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Color(0xFF2EC8EA), Color(0xFF9CC017)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter),
+        ),
+        child: Column(
+          children: [
+            ItemCard(),
+          ],
+        ),
       ),
     );
   }
