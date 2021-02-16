@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
-class CardTable {
+class CartTable {
   String _itemName, _itemCategory, _itemBrand, _weightLabel, _state;
   int _id;
   double _itemPrice, _itemQuantity, _weight;
   Uint8List _imgUrl;
 
-  CardTable(
+  CartTable(
       this._itemName,
       this._itemCategory,
       this._itemBrand,
@@ -55,7 +55,7 @@ class CardTable {
   }
 
   // Extract a Note object from a Map object
-  CardTable.fromMapObject(Map<String, dynamic> map) {
+  CartTable.fromMapObject(Map<String, dynamic> map) {
 
     this._id = map['id'];
     this._itemName = map['item_name'];

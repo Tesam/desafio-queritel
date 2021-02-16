@@ -13,10 +13,6 @@ class DatabaseHelper {
 
   String dbName = "shopdb.db";
   String cartTable = "cart_table";
-  String colId = 'id';
-  String name = 'nombre';
-  String description = 'descripcion';
-  String imagen = 'imagen';
 
   DatabaseHelper._createInstance();
 
@@ -71,19 +67,17 @@ class DatabaseHelper {
     return _database;
   }
 
-  Future<CardTable> getInfo(String id) async {
+  Future<List<CartTable>> getCartItems(String state) async {
     Database db = await this.database;
-    var result =await  db.query("$cartTable", where: "state = ?", whereArgs: ['active']);
+    var result =await  db.query("$cartTable", where: "state = ?", whereArgs: [state]);
 
-    //para manejar QRs que no forman parte de la base de datos
-    var map = Map<String, dynamic>();
-    /*map["id"] = "null";
-    map['nombre'] = "null";
-    map['descripcion'] = "null";
-    map['imagen'] = null;*/
+    var list = List<CartTable>();
 
-    return result.isNotEmpty ? CardTable.fromMapObject(result.first) : CardTable.fromMapObject(map);
+    result.forEach((element) {
+      list.add(CartTable.fromMapObject(element));
+    });
 
+    return list;
   }
 
 }

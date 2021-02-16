@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:desafio_queritel/utils/cart_table.dart';
 import 'package:desafio_queritel/utils/database_helper.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +9,7 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  String itemName = '', itemCategory = '';
-  double weight = 2.0, itemPrice = 1.0, itemQuantity = 3.0;
-  Uint8List imgUrl;
+  List<CartTable> cardTableList;
 
   @override
   void initState() {
@@ -22,32 +18,31 @@ class _CartState extends State<Cart> {
   }
 
   void loadDatabase() async {
-    Future<CardTable> todoListFuture = databaseHelper.getInfo('ds');
-    todoListFuture.then((value) {
-      print('BASE DE DATOS: ${value.itemName}, ${value.itemCategory}, ${value.weight}, ${value.itemPrice}, ${value.itemQuantity}, ${value.imgUrl}');
-
+    Future<List<CartTable>> cartList = databaseHelper.getCartItems('active');
+    cartList.then((value) {
       setState(() {
-        this.itemName = value.itemName;
-        this.itemCategory = value.itemCategory;
-        this.weight = value.weight;
-        this.itemPrice = value.itemPrice;
-        this.itemQuantity = value.itemQuantity;
-        this.imgUrl = value.imgUrl;
+        this.cardTableList = value;
       });
-
-    });
-  }
+   });
+ }
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+        body: loadCartCards(cardTableList),
+    );
+  }
 
-    if (imgUrl == null) {
+  Widget loadCartCards(List<CartTable> cartTableList){
+
+    if (cartTableList == null) {
       return CircularProgressIndicator();
     }
 
-    return Scaffold(
-        body: Column(
-        children: [
+    List<Widget> list = new List<Widget>();
+    cartTableList.forEach((cartTable) {
+
+      list.add(
           Container(
               padding: EdgeInsets.fromLTRB(10,10,10,0),
               height: 220,
@@ -63,7 +58,7 @@ class _CartState extends State<Cart> {
                       Row(
                         children: [
                           Image(
-                            image: MemoryImage(imgUrl),
+                            image: MemoryImage(cartTable.imgUrl),
                             height: 80.0,
                           ),
                           Column(
@@ -71,15 +66,15 @@ class _CartState extends State<Cart> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  this.itemName.toString(),
+                                  cartTable.itemName.toString(),
                                   style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 18.0,
                                   ),
                                 ),),
                               FittedBox(child: Text(
-                                '${this.itemCategory.toString()}, ${this.weight.toString()}, ${this.itemPrice.toString()}',
+                                '${cartTable.itemCategory.toString()}, ${cartTable.weight.toString()}, ${cartTable.itemPrice.toString()}',
                                 style: TextStyle(
-                                    fontSize: 14.0
+                                    fontSize: 16.0
                                 ),
                               ),),
                             ],
@@ -102,7 +97,7 @@ class _CartState extends State<Cart> {
                                 child: Text(
                                   "Remove",
                                   style: TextStyle(
-                                      fontSize: 18.0,
+                                      fontSize: 16.0,
                                       color: Colors.white
                                   ),
                                 ),
@@ -111,7 +106,7 @@ class _CartState extends State<Cart> {
                           ),
                           FittedBox(
                             child: Text(
-                              this.itemQuantity.toString(),
+                              cartTable.itemQuantity.toString(),
                               style: TextStyle(
                                 fontSize: 18.0,
                               ),
@@ -123,8 +118,10 @@ class _CartState extends State<Cart> {
                 ),
               )
           )
-      ],
-    ));
+      );
+    });
+
+    return new Column(children: list);
   }
 
 }
