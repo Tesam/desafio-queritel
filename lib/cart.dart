@@ -10,6 +10,7 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<CartTable> cartTableList;
+  double totalPrice = 0.0;
 
   @override
   void initState() {
@@ -17,8 +18,6 @@ class _CartState extends State<Cart> {
     loadCartItems();
     //databaseHelper.activeCartItems(); //just to active all the items in the cart, for tests.
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +44,26 @@ class _CartState extends State<Cart> {
       ),
     );
 
+    final priceContainer = Container(
+      margin: EdgeInsets.fromLTRB(10,10,10,0),
+      height: 100.0,
+      alignment: Alignment.center,
+      color: Colors.greenAccent,
+      child: Text(
+        '${this.totalPrice} \$',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 30.0,
+          color: Colors.black54,
+        ),
+      ),
+    );
+
     return Scaffold(
         body: ListView(
           children: [
             loadCartCards(cartTableList),
+            priceContainer,
             checkoutButton,
           ],
         ),
@@ -56,15 +71,22 @@ class _CartState extends State<Cart> {
   }
 
   void loadCartItems() async {
+    double price = 0;
     Future<List<CartTable>> cartList = databaseHelper.getCartItems('active');
     cartList.then((value) {
+      value.forEach((cartItem) {
+        price = price + cartItem.itemPrice.toDouble();
+      });
+
       setState(() {
         this.cartTableList = value;
+        this.totalPrice = price;
       });
     });
   }
 
   void checkout() async{
+    Future<int> addOrder = databaseHelper.addOrder(this.cartTableList);
     Future<int> updates = databaseHelper.updateCartItemState(this.cartTableList, 'inactive');
     updates.then((value) => loadCartItems());
   }

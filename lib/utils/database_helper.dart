@@ -1,3 +1,5 @@
+import 'package:desafio_queritel/utils/order_items_table.dart';
+import 'package:desafio_queritel/utils/order_table.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -5,6 +7,7 @@ import 'cart_table.dart';
 import 'package:path/path.dart';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
+import 'package:uuid/uuid.dart';
 
 
 class DatabaseHelper {
@@ -12,7 +15,7 @@ class DatabaseHelper {
   static Database _database;                // Singleton Database
 
   String dbName = "shopdb.db";
-  String cartTable = "cart_table";
+  String cartTable = "cart_table", orderTableName = "order_table", orderItemsTableName = "order_items_table";
 
   DatabaseHelper._createInstance();
 
@@ -110,11 +113,66 @@ class DatabaseHelper {
     int counter = 0;
 
     cartTableList.forEach((cartTableUpdate) async{
-        cartTableUpdate.state = state;
+        cartTableUpdate.setState = state;
         counter = counter + await db.update("$cartTable", cartTableUpdate.toMap(), where: 'id=?', whereArgs: [cartTableUpdate.id]);
     });
 
     return counter;
   }
+
+  Future<int> addOrder(List<CartTable> cartTableList) async{
+    Database db = await this.database;
+    int counter = 0;
+
+    String orderId = Uuid().toString();
+    String date = DateTime.now().toString();
+    double price = 0;
+
+    cartTableList.forEach((cartTable) {
+      price = price + cartTable.itemPrice;
+      //return priceInit;
+    });
+
+    //add random order_id, price, date
+    OrderTable orderTable = OrderTable(orderId, date, price);
+    int id = await db.insert("$orderTableName", orderTable.toMap()).whenComplete(() => addOrderItems(cartTableList, orderId));
+    print('INSERTADO: $id');
+
+    List<Map> listA = await db.rawQuery('SELECT * FROM order_table');
+    print('LISTA de ordenes: ${listA.length}');
+
+    return id;
+  }
+
+  Future<int> addOrderItems(List<CartTable> cartTableList, String orderId) async{
+    Database db = await this.database;
+
+    OrderItemsTable orderItemsTable;
+
+    int count = 0;
+    cartTableList.forEach((cartTable) async{
+      orderItemsTable = OrderItemsTable(
+        cartTable.itemName,
+        cartTable.itemCategory,
+        cartTable.itemBrand,
+        cartTable.weightLabel,
+        orderId,
+        cartTable.id,
+        cartTable.itemPrice,
+        cartTable.itemQuantity,
+        cartTable.weight,
+        cartTable.imgUrl,
+      );
+      count = count + await db.insert(orderItemsTableName, orderItemsTable.toMap());
+    });
+
+    List<Map> listA = await db.rawQuery('SELECT * FROM order_items_table');
+    //print('LISTA de orden items con nuevo orderid: ${listA[1].values}');
+
+    print('LISTA de orden items con nuevo orderid: ${listA.length}');
+
+    return count;
+  }
+
 
 }
