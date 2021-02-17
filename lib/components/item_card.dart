@@ -1,3 +1,4 @@
+import 'package:desafio_queritel/models/cart_table.dart';
 import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -54,6 +55,17 @@ class _ItemCardState extends State<ItemCard> {
         _counter--;
       }
     });
+  }
+
+  void _addToCart() {
+    print('Transformando product to cartTable');
+    print(widget.title);
+    print(widget.category);
+    print(widget.price);
+    print(widget.pic_url);
+    print(_counter);
+
+    // CartTable productToadd = CartTable(widget.title, widget.category, 'Nestle', '50oz', 'Active', 10, widget.price, _counter.toDouble(), _weight, )
   }
 
   @override
@@ -116,7 +128,9 @@ class _ItemCardState extends State<ItemCard> {
                         )),
                     SizedBox(width: 50), // give it width
                     RaisedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _addToCart();
+                      },
                       child: const Text(
                         'Add to cart',
                         style: TextStyle(fontSize: 20),
