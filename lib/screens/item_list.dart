@@ -1,12 +1,12 @@
 import 'package:badges/badges.dart';
+import 'package:desafio_queritel/logic/cart_item_provider.dart';
 import 'package:desafio_queritel/screens/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:desafio_queritel/screens/cart.dart';
 import 'package:desafio_queritel/components/item_card.dart';
 import 'package:desafio_queritel/logic/bloc.dart';
 import 'package:desafio_queritel/utils/colors.dart';
-import 'package:desafio_queritel/logic/cart_item_bloc.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:provider/provider.dart';
 
 class ItemList extends StatefulWidget {
   @override
@@ -15,7 +15,6 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   final bloc = Block();
-  CartItemBloc cartItemBloc;
 
   @override
   void initState() {
@@ -24,7 +23,7 @@ class _ItemListState extends State<ItemList> {
   }
 
   Widget build(BuildContext context) {
-    cartItemBloc = BlocProvider.of<CartItemBloc>(context);
+    final _cartItemProvider = Provider.of<CartItemProvider>(context);
 
     return AnimatedBuilder(
       animation: bloc,
@@ -36,7 +35,7 @@ class _ItemListState extends State<ItemList> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Badge(
-                  badgeContent: Text('5'),
+                  badgeContent: Text(_cartItemProvider.badge.toString()),
                   badgeColor: PRIMARY,
                   child: IconButton(
                     icon: Icon(
