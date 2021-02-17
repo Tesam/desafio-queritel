@@ -77,7 +77,62 @@ class DatabaseHelper {
       list.add(CartTable.fromMapObject(element));
     });
 
+    List<Map> listA = await db.rawQuery('SELECT * FROM cart_table');
+    print('LISTA ANTES: ${listA.length}');
+
     return list;
   }
+
+  Future<int> updateCartItems(CartTable cartTableUpdate) async{
+    Database db = await this.database;
+
+    List<Map> listA = await db.rawQuery('SELECT * FROM cart_table');
+    print('LISTA ANTES: ${listA.length}');
+    //var result = await  db.update("$cartTable", cartTable.toMap(), where: 'id = ?', whereArgs: [cartTable.id]);
+    /*var map = Map<String, dynamic>();
+    map['item_name'] = 'nombre';
+    map['item_category'] = 'categoria';
+    map['item_brand'] = 'banrdfa';
+    map['weight_label'] = 'sd';
+    map['state'] = 'inactive';
+    map['item_price'] = 'r';
+    map['item_quantity'] = '_itemQuantity';
+    map['weight'] = '_weight';
+    map['img_url'] = '_imgUrl';
+    map['id'] = '1';*/
+    print('ENTRE EN UPDATE');
+
+    /*int count = await  db.update("cart_table", map, where: 'id = ?', whereArgs: []);
+    print('ROWS: $count');*/
+
+    print('cartTable: $cartTable');
+    print('ID: ${cartTableUpdate.id.toInt()}');
+    // Update some record
+    int count = await db.rawUpdate(
+        'UPDATE cart_table SET state = ? WHERE id = ?',
+        ['inactive', '2']).whenComplete(() => print('termine'));
+    print('updated: $count');
+
+    List<Map> list = await db.rawQuery('SELECT * FROM cart_table WHERE state = "active" ');
+    print(list.length);
+
+    return count;
+    //return await  db.update("cart_table", map, where: 'id = ?', whereArgs: [map['id']]);
+  }
+
+  /*Future<int> updateCartActiveItems(List<CartTable> cartTableList) async{
+    Database db = await this.database;
+    print('UPDATE DB ANTES: ${cartTableList[1].state}');
+    //var result = await  db.update("$cartTable", cartTable.toMap(), where: 'id = ?', whereArgs: [cartTable.id]);
+    int counter = 0;
+    cartTableList.forEach((cartTableUpdate) async{
+        cartTableUpdate.state = 'inactive';
+        print('UPDATE DB DESPUES: ${cartTableUpdate.state}');
+        counter = counter + await db.update("$cartTable", cartTableUpdate.toMap(), where: 'id=?', whereArgs: [cartTableUpdate.id]);
+    });
+
+    print('COUNTER: $counter');
+    return counter;
+  }*/
 
 }

@@ -33,6 +33,13 @@ class CartTable {
 
   Uint8List get imgUrl =>_imgUrl;
 
+  void set state(String currentState) {
+    _state = currentState;
+  }
+
+  //set stateSet(String currentState) => _state = currentState;
+
+
   // Convert a Note object into a Map object
   Map<String, dynamic> toMap() {
 

@@ -9,7 +9,7 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  List<CartTable> cardTableList;
+  List<CartTable> cartTableList;
 
   @override
   void initState() {
@@ -21,15 +21,65 @@ class _CartState extends State<Cart> {
     Future<List<CartTable>> cartList = databaseHelper.getCartItems('active');
     cartList.then((value) {
       setState(() {
-        this.cardTableList = value;
+        this.cartTableList = value;
       });
    });
  }
 
+ void checkout() async{
+   Future<int> rowUpdates = databaseHelper.updateCartItems(this.cartTableList.first);
+
+   print('cart: $rowUpdates');
+
+      //Future<int> rowUpdates = databaseHelper.updateCartActiveItems(this.cartTableList);
+
+      //await databaseHelper.updateCartActiveItems();
+      //print('BD UPDATE: $rowUpdates');
+     /* this.cartTableList.forEach((cartTable) {
+        print('CHECKOUT: ${cartTable.itemName}, ${cartTable.state}');
+        cartTable.state = 'inactive';
+
+        print('CHECKOUT: ${cartTable.itemName}, ${cartTable.state}');
+        /*Future<int> rowUpdates = databaseHelper.updateCartItems(cartTable);
+
+      print('BD UPDATE: $rowUpdates');*/
+      });*/
+
+
+ }
+
   @override
   Widget build(BuildContext context) {
+
+    final checkoutButton = InkWell(
+      onTap: checkout,
+      child: Container(
+        height: 60.0,
+        width: 100.0,
+        margin: EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          color: Colors.blueAccent,
+        ),
+        child: Center(
+          child: Text(
+            "Checkout",
+            style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white
+            ),
+          ),
+        ),
+      ),
+    );
+
     return Scaffold(
-        body: loadCartCards(cardTableList),
+        body: ListView(
+          children: [
+            loadCartCards(cartTableList),
+            checkoutButton,
+          ],
+        ),
     );
   }
 
@@ -121,7 +171,7 @@ class _CartState extends State<Cart> {
       );
     });
 
-    return new ListView(children: list);
+    return new Column(children: list);
   }
 
 }
