@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:desafio_queritel/db/database_helper.dart';
 import 'package:desafio_queritel/models/cart_table.dart';
 import 'package:desafio_queritel/screens/cart.dart';
 import 'package:desafio_queritel/components/item_card.dart';
 import 'package:desafio_queritel/logic/bloc.dart';
 import 'package:desafio_queritel/utils/colors.dart';
-import 'package:flutter/material.dart';
+import 'package:badges/badges.dart';
 
 class ItemList extends StatefulWidget {
   @override
@@ -20,7 +21,6 @@ class _ItemListState extends State<ItemList> {
     super.initState();
     bloc.requestProducts();
     Future<List<CartTable>> itemsInCart = databaseHelper.getCartItems('active');
-    print(itemsInCart);
   }
 
   Widget build(BuildContext context) {
@@ -30,16 +30,29 @@ class _ItemListState extends State<ItemList> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: TEXT,
+              leading: GestureDetector(
+                onTap: () {/* Write listener code here */},
+                child: Icon(
+                  Icons.menu, // add custom icons also
+                ),
+              ),
               actions: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Badge(
+                    badgeContent: Text('3'),
+                    badgeColor: PRIMARY,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Cart()));
+                      },
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Cart()));
-                  },
                 )
               ],
             ),

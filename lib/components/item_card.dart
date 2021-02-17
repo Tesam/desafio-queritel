@@ -61,13 +61,6 @@ class _ItemCardState extends State<ItemCard> {
   }
 
   void _addToCart() async {
-    print('Transformando product to cartTable');
-    print(widget.title);
-    print(widget.category);
-    print(widget.price);
-    print(widget.pic_url);
-    print(_counter);
-
     CartTable productToAdd = CartTable(
       widget.title,
       widget.category,
