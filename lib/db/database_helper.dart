@@ -47,7 +47,7 @@ class DatabaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
 
     String path = join(directory.path, "assets/db/" + dbName);
-    //await deleteDatabase(path);
+    // await deleteDatabase(path);
 
     // Check if the database exists
     var exists = await databaseExists(path);
@@ -154,7 +154,8 @@ class DatabaseHelper {
     Database db = await this.database;
     int counter = 0;
 
-    String orderId = Uuid().toString();
+    String orderId = Uuid().v1().toString();
+    print(orderId);
     String date = DateTime.now().toString();
     double price = 0;
 

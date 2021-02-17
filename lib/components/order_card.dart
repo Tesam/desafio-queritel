@@ -31,7 +31,7 @@ class OrderCard extends StatelessWidget {
                 'Order: ' + orderId,
                 style: TextStyle(
                   color: PRIMARY,
-                  fontSize: 20,
+                  fontSize: 13,
                   fontWeight: FontWeight.w800,
                 ),
               )),

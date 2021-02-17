@@ -15,7 +15,6 @@ class _CartState extends State<Cart> {
   List<CartTable> cartTableList;
   double totalPrice = 0.0;
 
-
   @override
   void initState() {
     super.initState();
@@ -72,6 +71,9 @@ class _CartState extends State<Cart> {
     );
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: TEXT,
+      ),
       body: ListView(
         children: [
           loadCartCards(cartTableList, _cartItemProvider),
@@ -118,7 +120,8 @@ class _CartState extends State<Cart> {
     _cartItemProvider.minusBadge();
   }
 
-  Widget loadCartCards(List<CartTable> cartTableList, CartItemProvider _cartItemProvider) {
+  Widget loadCartCards(
+      List<CartTable> cartTableList, CartItemProvider _cartItemProvider) {
     if (cartTableList == null) {
       return CircularProgressIndicator();
     }

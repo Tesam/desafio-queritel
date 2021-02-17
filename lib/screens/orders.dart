@@ -76,7 +76,7 @@ class _OrdersState extends State<Orders> {
                         itemCount: orderList.length,
                         itemBuilder: (_, index) {
                           return OrderCard(
-                            orderId: orderList[index].id.toString(),
+                            orderId: orderList[index].orderId,
                             price: orderList[index].price,
                             date: orderList[index].date,
                           );
