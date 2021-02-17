@@ -1,7 +1,9 @@
+import 'package:desafio_queritel/logic/cart_item_provider.dart';
 import 'package:desafio_queritel/models/cart_table.dart';
 import 'package:desafio_queritel/db/database_helper.dart';
 import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class _CartState extends State<Cart> {
   List<CartTable> cartTableList;
   double totalPrice = 0.0;
 
+
   @override
   void initState() {
     super.initState();
@@ -23,8 +26,9 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
+    final _cartItemProvider = Provider.of<CartItemProvider>(context);
     final checkoutButton = InkWell(
-      onTap: checkout,
+      onTap: () => checkout(_cartItemProvider),
       child: Container(
         height: 60.0,
         width: 100.0,
@@ -70,7 +74,7 @@ class _CartState extends State<Cart> {
     return Scaffold(
       body: ListView(
         children: [
-          loadCartCards(cartTableList),
+          loadCartCards(cartTableList, _cartItemProvider),
           priceContainer,
           checkoutButton,
         ],
@@ -94,23 +98,27 @@ class _CartState extends State<Cart> {
     });
   }
 
-  void checkout() async {
+  void checkout(CartItemProvider _cartItemProvider) async {
     Future<int> addOrder = databaseHelper.addOrder(this.cartTableList);
     Future<int> updates =
         databaseHelper.updateCartItemState(this.cartTableList, 'inactive');
     updates.then((value) => loadCartItems());
+
+    _cartItemProvider.resetBadge();
   }
 
-  void remove(cartTable) async {
+  void remove(cartTable, CartItemProvider _cartItemProvider) async {
     List<CartTable> listRemove = List<CartTable>();
     listRemove.add(cartTable);
 
     Future<int> updates =
         databaseHelper.updateCartItemState(listRemove, 'inactive');
     updates.then((value) => loadCartItems());
+
+    _cartItemProvider.minusBadge();
   }
 
-  Widget loadCartCards(List<CartTable> cartTableList) {
+  Widget loadCartCards(List<CartTable> cartTableList, CartItemProvider _cartItemProvider) {
     if (cartTableList == null) {
       return CircularProgressIndicator();
     }
@@ -165,7 +173,7 @@ class _CartState extends State<Cart> {
                   Row(
                     children: [
                       InkWell(
-                        onTap: () => remove(cartTable),
+                        onTap: () => remove(cartTable, _cartItemProvider),
                         child: Container(
                           height: 40.0,
                           width: 100.0,

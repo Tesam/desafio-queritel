@@ -1,7 +1,9 @@
 import 'package:desafio_queritel/db/database_helper.dart';
+import 'package:desafio_queritel/logic/cart_item_provider.dart';
 import 'package:desafio_queritel/models/cart_table.dart';
 import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ItemCard extends StatefulWidget {
   /// Creates a card for product
@@ -43,7 +45,7 @@ class ItemCard extends StatefulWidget {
 
 class _ItemCardState extends State<ItemCard> {
   DatabaseHelper databaseHelper = DatabaseHelper();
-
+ // CartItemBloc cartItemBloc;
   int _counter = 0;
 
   void _incrementCounter() {
@@ -80,6 +82,8 @@ class _ItemCardState extends State<ItemCard> {
 
   @override
   Widget build(BuildContext context) {
+    final _cartItemProvider = Provider.of<CartItemProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -140,6 +144,7 @@ class _ItemCardState extends State<ItemCard> {
                     RaisedButton(
                       onPressed: () {
                         _addToCart();
+                        _cartItemProvider.plusBadge();
                       },
                       child: const Text(
                         'Add to cart',
