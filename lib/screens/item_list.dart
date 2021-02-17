@@ -3,6 +3,8 @@ import 'package:desafio_queritel/components/item_card.dart';
 import 'package:desafio_queritel/logic/bloc.dart';
 import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:desafio_queritel/logic/cart_item_bloc.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 class ItemList extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   final bloc = Block();
+  CartItemBloc cartItemBloc;
 
   @override
   void initState() {
@@ -19,6 +22,8 @@ class _ItemListState extends State<ItemList> {
   }
 
   Widget build(BuildContext context) {
+    cartItemBloc = BlocProvider.of<CartItemBloc>(context);
+
     return AnimatedBuilder(
         animation: bloc,
         builder: (context, child) {
