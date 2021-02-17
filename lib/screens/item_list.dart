@@ -1,5 +1,7 @@
+import 'package:desafio_queritel/screens/cart.dart';
 import 'package:desafio_queritel/components/item_card.dart';
 import 'package:desafio_queritel/logic/bloc.dart';
+import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class ItemList extends StatefulWidget {
@@ -22,7 +24,7 @@ class _ItemListState extends State<ItemList> {
         builder: (context, child) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Color(0xFF191A32),
+              backgroundColor: TEXT,
               actions: <Widget>[
                 IconButton(
                   icon: Icon(
@@ -30,7 +32,8 @@ class _ItemListState extends State<ItemList> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    // do something
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Cart()));
                   },
                 )
               ],
@@ -38,7 +41,7 @@ class _ItemListState extends State<ItemList> {
             body: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xFF2EC8EA), Color(0xFF9CC017)],
+                  colors: [FIRST_LINEAL_BACKGROUND, SECOND_LINEAL_BACKGROUND],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),

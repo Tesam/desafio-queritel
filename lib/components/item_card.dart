@@ -63,7 +63,7 @@ class _ItemCardState extends State<ItemCard> {
       child: Column(
         children: [
           Container(
-            height: 320,
+            height: 350,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
@@ -78,14 +78,17 @@ class _ItemCardState extends State<ItemCard> {
                     height: 150,
                     child: Image.network(
                       widget.pic_url,
-                      fit: BoxFit.fill,
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 30,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     RaisedButton(
+                        color: FIRST_LINEAL_BACKGROUND,
                         onPressed: () {},
                         child: Row(
                           children: [
@@ -158,7 +161,7 @@ class _ItemCardState extends State<ItemCard> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF9CC017),
+                          color: SECONDARY,
                         ),
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'package:desafio_queritel/models/cart_table.dart';
 import 'package:desafio_queritel/db/database_helper.dart';
+import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class Cart extends StatefulWidget {
@@ -16,8 +17,8 @@ class _CartState extends State<Cart> {
   void initState() {
     super.initState();
     loadCartItems();
-    databaseHelper
-        .activeCartItems(); //just to active all the items in the cart, for tests.
+    // databaseHelper
+    //     .activeCartItems(); //just to active all the items in the cart, for tests.
   }
 
   @override
@@ -30,7 +31,11 @@ class _CartState extends State<Cart> {
         margin: EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: Colors.blueAccent,
+          gradient: LinearGradient(
+            colors: [FIRST_LINEAL_BACKGROUND_II, SECOND_LINEAL_BACKGROUND_II],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
         ),
         child: Center(
           child: Text(
@@ -45,13 +50,19 @@ class _CartState extends State<Cart> {
       margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
       height: 100.0,
       alignment: Alignment.center,
-      color: Colors.greenAccent,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [FIRST_LINEAL_BACKGROUND, SECOND_LINEAL_BACKGROUND],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
       child: Text(
         '${this.totalPrice} \$',
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 30.0,
-          color: Colors.black54,
+          fontSize: 40.0,
+          color: Colors.white,
         ),
       ),
     );
@@ -91,7 +102,7 @@ class _CartState extends State<Cart> {
 
   void remove(int id) async {
     List<CartTable> listRemove = List<CartTable>();
-    listRemove.add(this.cartTableList[id - 1]);
+    listRemove.add(this.cartTableList[id]);
 
     Future<int> updates =
         databaseHelper.updateCartItemState(listRemove, 'inactive');
@@ -105,7 +116,8 @@ class _CartState extends State<Cart> {
 
     List<Widget> list = new List<Widget>();
     cartTableList.forEach((cartTable) {
-      list.add(Container(
+      list.add(
+        Container(
           padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: 220,
           width: double.maxFinite,
@@ -129,14 +141,18 @@ class _CartState extends State<Cart> {
                             child: Text(
                               cartTable.itemName.toString(),
                               style: TextStyle(
-                                fontSize: 18.0,
+                                fontSize: 30.0,
+                                color: TEXT,
                               ),
                             ),
                           ),
                           FittedBox(
                             child: Text(
-                              '${cartTable.itemCategory.toString()}, ${cartTable.weight.toString()}, ${cartTable.itemPrice.toString()}',
-                              style: TextStyle(fontSize: 16.0),
+                              '${cartTable.itemCategory.toString()}, ${cartTable.weight.toString()}, Price: ${cartTable.itemPrice.toString()}',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: SECONDARY,
+                              ),
                             ),
                           ),
                         ],
@@ -166,9 +182,11 @@ class _CartState extends State<Cart> {
                       ),
                       FittedBox(
                         child: Text(
-                          cartTable.itemQuantity.toString(),
+                          'Quantity:  ' + cartTable.itemQuantity.toString(),
                           style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700,
+                            color: TEXT,
                           ),
                         ),
                       ),
@@ -177,7 +195,9 @@ class _CartState extends State<Cart> {
                 ],
               ),
             ),
-          )));
+          ),
+        ),
+      );
     });
 
     return new Column(children: list);
