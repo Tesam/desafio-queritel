@@ -33,6 +33,8 @@ dependencies:
   uuid: ^2.2.2
   badges: ^1.1.6
 
+  generic_bloc_provider: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
