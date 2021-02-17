@@ -61,7 +61,7 @@ class _CartState extends State<Cart> {
         ),
       ),
       child: Text(
-        '${this.totalPrice} \$',
+        '${this.totalPrice.toStringAsFixed(2)} \$',
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 40.0,
@@ -144,8 +144,8 @@ class _CartState extends State<Cart> {
                     children: [
                       Image(
                         image: cartTable.imgUrl == null
-                            ? NetworkImage(cartTable.imgUrl)
-                            : null,
+                            ? null
+                            : NetworkImage(cartTable.imgUrl),
                         height: 80.0,
                       ),
                       Column(

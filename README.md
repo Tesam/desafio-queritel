@@ -10,3 +10,6 @@ The application has been developed with:
 - **uuid**: create a a randomly generated string.
 - **badges**: allows use number with icons.
 - **provider**: allows the management of states, as well as abstracts the business logic out of the component.
+
+## Folder with video, apk and IOS codebase
+[Folder](https://drive.google.com/drive/folders/1XDFPrDfWLg9PPuthIFa2jNRHQMwrdvNR?usp=sharing)
