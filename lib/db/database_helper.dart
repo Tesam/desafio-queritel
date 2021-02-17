@@ -14,7 +14,7 @@ class DatabaseHelper {
   static Database _database; // Singleton Database
 
   String dbName = "shopdb.db";
-  String cartTable = "cart_table",
+  String cartTableName = "cart_table",
       orderTableName = "order_table",
       orderItemsTableName = "order_items_table";
 
@@ -69,10 +69,10 @@ class DatabaseHelper {
       await File(path).writeAsBytes(bytes, flush: true);
     } else {
       print("Opening existing database");
+      // Open the database at a given path
       database = await openDatabase(path);
     }
-    // Open the database at a given path
-    //var database = await openDatabase(path);
+
     return database;
   }
 
@@ -86,7 +86,7 @@ class DatabaseHelper {
   Future<List<CartTable>> getCartItems(String state) async {
     Database db = await this.database;
     var result =
-        await db.query("$cartTable", where: "state = ?", whereArgs: [state]);
+        await db.query("$cartTableName", where: "state = ?", whereArgs: [state]);
 
     var list = List<CartTable>();
 
@@ -109,16 +109,22 @@ class DatabaseHelper {
     return count;
   }
 
+  Future<int> addCartItem(CartTable cartTable) async {
+    Database db = await this.database;
+
+    return await db.insert("$cartTableName", cartTable.toMap());
+  }
+
   Future<int> updateCartItemState(
       List<CartTable> cartTableList, String state) async {
     Database db = await this.database;
     int counter = 0;
 
-    cartTableList.forEach((cartTableUpdate) async {
-      cartTableUpdate.setState = state;
+    cartTableList.forEach((cartTable) async {
+      cartTable.setState = state;
       counter = counter +
-          await db.update("$cartTable", cartTableUpdate.toMap(),
-              where: 'id=?', whereArgs: [cartTableUpdate.id]);
+          await db.update("$cartTableName", cartTable.toMap(),
+              where: 'id=?', whereArgs: [cartTable.id]);
     });
 
     return counter;
