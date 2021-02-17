@@ -113,11 +113,10 @@ class DatabaseHelper {
   Future<int> getCartItem(String id) async {
     Database db = await this.database;
 
-    var result = await db.query("$cartTableName",
-        where: "id = ?", whereArgs: [id]);
+    var result =
+        await db.query("$cartTableName", where: "id = ?", whereArgs: [id]);
 
     return result.length;
-
   }
 
   Future<int> addCartItem(CartTable cartTable) async {
@@ -125,15 +124,15 @@ class DatabaseHelper {
 
     Future<int> result = getCartItem(cartTable.id.toString());
     result.then((value) {
-      if(value > 0){
+      if (value > 0) {
         //update
-        return db.update("$cartTableName", cartTable.toMap(), where: 'id=?', whereArgs: [cartTable.id]);
-      }else{
+        return db.update("$cartTableName", cartTable.toMap(),
+            where: 'id=?', whereArgs: [cartTable.id]);
+      } else {
         //insert
         return db.insert("$cartTableName", cartTable.toMap());
       }
     });
-
   }
 
   Future<int> updateCartItemState(

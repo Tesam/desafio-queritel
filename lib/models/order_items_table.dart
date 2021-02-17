@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 class OrderItemsTable {
   String _itemName, _itemCategory, _itemBrand, _weightLabel, _orderId;
   int _id;
