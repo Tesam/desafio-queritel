@@ -83,7 +83,8 @@ class _CartState extends State<Cart> {
     Future<List<CartTable>> cartList = databaseHelper.getCartItems('active');
     cartList.then((value) {
       value.forEach((cartItem) {
-        price = price + cartItem.itemPrice.toDouble();
+        price = price +
+            cartItem.itemPrice.toDouble() * cartItem.itemQuantity.toDouble();
       });
 
       setState(() {
@@ -102,6 +103,7 @@ class _CartState extends State<Cart> {
 
   void remove(int id) async {
     List<CartTable> listRemove = List<CartTable>();
+    print('id que devuelve:' + id.toString());
     listRemove.add(this.cartTableList[id]);
 
     Future<int> updates =
@@ -131,7 +133,9 @@ class _CartState extends State<Cart> {
                   Row(
                     children: [
                       Image(
-                        image: MemoryImage(cartTable.imgUrl),
+                        image: cartTable.imgUrl.contains('http')
+                            ? NetworkImage(cartTable.imgUrl)
+                            : null,
                         height: 80.0,
                       ),
                       Column(
@@ -141,7 +145,7 @@ class _CartState extends State<Cart> {
                             child: Text(
                               cartTable.itemName.toString(),
                               style: TextStyle(
-                                fontSize: 30.0,
+                                fontSize: 10.0,
                                 color: TEXT,
                               ),
                             ),

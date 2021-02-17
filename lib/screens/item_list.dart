@@ -55,6 +55,9 @@ class _ItemListState extends State<ItemList> {
                       itemBuilder: (_, index) {
                         return ItemCard(
                           title: bloc.products[index].title,
+                          brand: bloc.products[index].brand,
+                          weight: bloc.products[index].weight,
+                          weight_label: bloc.products[index].weight_label,
                           price: bloc.products[index].lider_price.toString(),
                           category: bloc.products[index].category,
                           pic_url: bloc.products[index].pic_url,

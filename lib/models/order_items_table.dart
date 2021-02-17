@@ -4,7 +4,7 @@ class OrderItemsTable {
   String _itemName, _itemCategory, _itemBrand, _weightLabel, _orderId;
   int _id;
   double _itemPrice, _itemQuantity, _weight;
-  Uint8List _imgUrl;
+  String _imgUrl;
 
   OrderItemsTable(
     this._itemName,
@@ -31,7 +31,7 @@ class OrderItemsTable {
   double get itemQuantity => _itemQuantity;
   double get weight => _weight;
 
-  Uint8List get imgUrl => _imgUrl;
+  String get imgUrl => _imgUrl;
 
   /*set setState(String currentState) {
     _state = currentState;

@@ -1,10 +1,8 @@
-import 'dart:typed_data';
-
 class CartTable {
   String _itemName, _itemCategory, _itemBrand, _weightLabel, _state;
   int _id;
   double _itemPrice, _itemQuantity, _weight;
-  Uint8List _imgUrl;
+  String _imgUrl;
 
   CartTable(
     this._itemName,
@@ -12,7 +10,6 @@ class CartTable {
     this._itemBrand,
     this._weightLabel,
     this._state,
-    this._id,
     this._itemPrice,
     this._itemQuantity,
     this._weight,
@@ -31,7 +28,7 @@ class CartTable {
   double get itemQuantity => _itemQuantity;
   double get weight => _weight;
 
-  Uint8List get imgUrl => _imgUrl;
+  String get imgUrl => _imgUrl;
 
   set setState(String currentState) {
     _state = currentState;

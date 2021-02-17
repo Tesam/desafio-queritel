@@ -47,6 +47,7 @@ class DatabaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
 
     String path = join(directory.path, "assets/db/" + dbName);
+    // await deleteDatabase(path);
 
     // Check if the database exists
     var exists = await databaseExists(path);
@@ -85,8 +86,8 @@ class DatabaseHelper {
 
   Future<List<CartTable>> getCartItems(String state) async {
     Database db = await this.database;
-    var result =
-        await db.query("$cartTableName", where: "state = ?", whereArgs: [state]);
+    var result = await db
+        .query("$cartTableName", where: "state = ?", whereArgs: [state]);
 
     var list = List<CartTable>();
 

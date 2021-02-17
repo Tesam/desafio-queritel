@@ -1,3 +1,4 @@
+import 'package:desafio_queritel/db/database_helper.dart';
 import 'package:desafio_queritel/models/cart_table.dart';
 import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,8 @@ class ItemCard extends StatefulWidget {
 }
 
 class _ItemCardState extends State<ItemCard> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -57,7 +60,7 @@ class _ItemCardState extends State<ItemCard> {
     });
   }
 
-  void _addToCart() {
+  void _addToCart() async {
     print('Transformando product to cartTable');
     print(widget.title);
     print(widget.category);
@@ -65,7 +68,21 @@ class _ItemCardState extends State<ItemCard> {
     print(widget.pic_url);
     print(_counter);
 
-    // CartTable productToadd = CartTable(widget.title, widget.category, 'Nestle', '50oz', 'Active', 10, widget.price, _counter.toDouble(), _weight, )
+    CartTable productToAdd = CartTable(
+      widget.title,
+      widget.category,
+      widget.brand,
+      widget.weight_label,
+      'active',
+      double.parse(widget.price),
+      _counter.toDouble(),
+      double.parse(widget.weight),
+      widget.pic_url,
+    );
+
+    if (_counter > 0) {
+      await databaseHelper.addCartItem(productToAdd);
+    }
   }
 
   @override
