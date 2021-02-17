@@ -142,11 +142,11 @@ class _CartState extends State<Cart> {
                 children: [
                   Row(
                     children: [
-                      Image(
-                        image: cartTable.imgUrl.contains('http')
-                            ? NetworkImage(cartTable.imgUrl)
-                            : null,
-                        height: 80.0,
+                      Container(
+                        height: 120,
+                        child: Image.network(
+                          cartTable.imgUrl,
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

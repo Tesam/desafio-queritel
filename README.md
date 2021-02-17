@@ -1,16 +1,12 @@
-# desafio_queritel
+# Queritel Challenge - WebApp
 
-A new Flutter application.
+This is a repository of an application made in Flutter for the Queritel challenge. It will connect with the following API [Link](https://api.queritel.com/api/test-lab/demo/item_list.php?key=AdhjyGTrsLoibtqBglfGewEw)
 
-## Getting Started
+The application has been developed with:
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **http**: package to connect with API.
+- **sqflite**: allows use SQL in mobile app.
+- **path_provider**: used with sqflite.
+- **uuid**: create a a randomly generated string.
+- **badges**: allows use number with icons.
+- **provider**: allows the management of states, as well as abstracts the business logic out of the component.

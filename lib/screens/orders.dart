@@ -70,7 +70,7 @@ class _OrdersState extends State<Orders> {
             Divider(),
             Expanded(
               child: orderList == null
-                  ? CircularProgressIndicator()
+                  ? Center(child: Text('You dont have orders'))
                   : Container(
                       child: ListView.builder(
                         itemCount: orderList.length,

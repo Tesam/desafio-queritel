@@ -45,7 +45,7 @@ class ItemCard extends StatefulWidget {
 
 class _ItemCardState extends State<ItemCard> {
   DatabaseHelper databaseHelper = DatabaseHelper();
- // CartItemBloc cartItemBloc;
+  // CartItemBloc cartItemBloc;
   int _counter = 0;
 
   void _incrementCounter() {
@@ -62,7 +62,7 @@ class _ItemCardState extends State<ItemCard> {
     });
   }
 
-  void _addToCart() async {
+  void _addToCart(CartItemProvider _cartItemProvider) async {
     CartTable productToAdd = CartTable(
       widget.title,
       widget.category,
@@ -76,6 +76,7 @@ class _ItemCardState extends State<ItemCard> {
     );
 
     if (_counter > 0) {
+      _cartItemProvider.plusBadge();
       await databaseHelper.addCartItem(productToAdd);
     }
   }
@@ -143,8 +144,7 @@ class _ItemCardState extends State<ItemCard> {
                     SizedBox(width: 50), // give it width
                     RaisedButton(
                       onPressed: () {
-                        _addToCart();
-                        _cartItemProvider.plusBadge();
+                        _addToCart(_cartItemProvider);
                       },
                       child: const Text(
                         'Add to cart',

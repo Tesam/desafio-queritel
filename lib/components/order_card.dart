@@ -1,3 +1,4 @@
+import 'package:desafio_queritel/screens/order_detail.dart';
 import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -53,13 +54,23 @@ class OrderCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
-                  child: Text(
-                'Details',
-                style: TextStyle(
-                  color: TEXT,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
+                  child: InkWell(
+                child: Text(
+                  'Details',
+                  style: TextStyle(
+                    color: TEXT,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderDetail(
+                                orderId: orderId,
+                              )));
+                },
               )),
             ),
           ],

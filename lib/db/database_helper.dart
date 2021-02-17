@@ -133,6 +133,7 @@ class DatabaseHelper {
         return db.insert("$cartTableName", cartTable.toMap());
       }
     });
+    return 0;
   }
 
   Future<int> updateCartItemState(
@@ -152,7 +153,6 @@ class DatabaseHelper {
 
   Future<int> addOrder(List<CartTable> cartTableList) async {
     Database db = await this.database;
-    int counter = 0;
 
     String orderId = Uuid().v1().toString();
     print(orderId);
