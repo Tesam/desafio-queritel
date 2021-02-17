@@ -101,10 +101,9 @@ class _CartState extends State<Cart> {
     updates.then((value) => loadCartItems());
   }
 
-  void remove(int id) async {
+  void remove(cartTable) async {
     List<CartTable> listRemove = List<CartTable>();
-    print('id que devuelve:' + id.toString());
-    listRemove.add(this.cartTableList[id]);
+    listRemove.add(cartTable);
 
     Future<int> updates =
         databaseHelper.updateCartItemState(listRemove, 'inactive');
@@ -132,12 +131,12 @@ class _CartState extends State<Cart> {
                 children: [
                   Row(
                     children: [
-                      Image(
+                      /*Image(
                         image: cartTable.imgUrl.contains('http')
                             ? NetworkImage(cartTable.imgUrl)
                             : null,
                         height: 80.0,
-                      ),
+                      ),*/
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -166,7 +165,7 @@ class _CartState extends State<Cart> {
                   Row(
                     children: [
                       InkWell(
-                        onTap: () => remove(cartTable.id.toInt()),
+                        onTap: () => remove(cartTable),
                         child: Container(
                           height: 40.0,
                           width: 100.0,
