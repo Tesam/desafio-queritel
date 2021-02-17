@@ -14,39 +14,11 @@ class _CartState extends State<Cart> {
   @override
   void initState() {
     super.initState();
-    loadDatabase();
+    loadCartItems();
+    //databaseHelper.activeCartItems(); //just to active all the items in the cart, for tests.
   }
 
-  void loadDatabase() async {
-    Future<List<CartTable>> cartList = databaseHelper.getCartItems('active');
-    cartList.then((value) {
-      setState(() {
-        this.cartTableList = value;
-      });
-   });
- }
 
- void checkout() async{
-   Future<int> rowUpdates = databaseHelper.updateCartItems(this.cartTableList.first);
-
-   print('cart: $rowUpdates');
-
-      //Future<int> rowUpdates = databaseHelper.updateCartActiveItems(this.cartTableList);
-
-      //await databaseHelper.updateCartActiveItems();
-      //print('BD UPDATE: $rowUpdates');
-     /* this.cartTableList.forEach((cartTable) {
-        print('CHECKOUT: ${cartTable.itemName}, ${cartTable.state}');
-        cartTable.state = 'inactive';
-
-        print('CHECKOUT: ${cartTable.itemName}, ${cartTable.state}');
-        /*Future<int> rowUpdates = databaseHelper.updateCartItems(cartTable);
-
-      print('BD UPDATE: $rowUpdates');*/
-      });*/
-
-
- }
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +53,28 @@ class _CartState extends State<Cart> {
           ],
         ),
     );
+  }
+
+  void loadCartItems() async {
+    Future<List<CartTable>> cartList = databaseHelper.getCartItems('active');
+    cartList.then((value) {
+      setState(() {
+        this.cartTableList = value;
+      });
+    });
+  }
+
+  void checkout() async{
+    Future<int> updates = databaseHelper.updateCartItemState(this.cartTableList, 'inactive');
+    updates.then((value) => loadCartItems());
+  }
+
+  void remove(int id) async{
+    List<CartTable> listRemove = List<CartTable>();
+    listRemove.add(this.cartTableList[id-1]);
+
+    Future<int> updates = databaseHelper.updateCartItemState(listRemove, 'inactive');
+    updates.then((value) => loadCartItems());
   }
 
   Widget loadCartCards(List<CartTable> cartTableList){
@@ -134,7 +128,7 @@ class _CartState extends State<Cart> {
                       Row(
                         children: [
                           InkWell(
-                            //onTap:
+                            onTap: () => remove(cartTable.id.toInt()),
                             child: Container(
                               height: 40.0,
                               width: 100.0,

@@ -24,20 +24,33 @@ class DatabaseHelper {
     return _databaseHelper;
   }
 
+  static Future<void> init() async {
+
+    if (_database != null) { return; }
+
+    try {
+      String _path = await getDatabasesPath() + 'example';
+      _database = await openDatabase(_path);
+    }
+    catch(ex) {
+      print(ex);
+    }
+  }
+
+
   Future<Database> initializeDatabase() async {
+    var database;
     // Get the directory path for both Android and iOS to store database.
     Directory directory = await getApplicationDocumentsDirectory();
 
     String path = join(directory.path, "assets/db/"+dbName);
-    await deleteDatabase(path);
 
     // Check if the database exists
     var exists = await databaseExists(path);
-
+    print('BD EXIST: $exists');
     if (!exists) {
       // Should happen only the first time you launch your application
       print("Creating new copy from asset");
-
 
       // Make sure the parent directory exists
       try {
@@ -53,14 +66,14 @@ class DatabaseHelper {
 
     } else {
       print("Opening existing database");
+      database = await openDatabase(path);
     }
     // Open the database at a given path
-    var database = await openDatabase(path);
+    //var database = await openDatabase(path);
     return database;
   }
 
   Future<Database> get database async {
-
     if (_database == null) {
       _database = await initializeDatabase();
     }
@@ -83,56 +96,25 @@ class DatabaseHelper {
     return list;
   }
 
-  Future<int> updateCartItems(CartTable cartTableUpdate) async{
+  Future<int> activeCartItems() async { //just to active all the items in the cart, for tests.
     Database db = await this.database;
-
-    List<Map> listA = await db.rawQuery('SELECT * FROM cart_table');
-    print('LISTA ANTES: ${listA.length}');
-    //var result = await  db.update("$cartTable", cartTable.toMap(), where: 'id = ?', whereArgs: [cartTable.id]);
-    /*var map = Map<String, dynamic>();
-    map['item_name'] = 'nombre';
-    map['item_category'] = 'categoria';
-    map['item_brand'] = 'banrdfa';
-    map['weight_label'] = 'sd';
-    map['state'] = 'inactive';
-    map['item_price'] = 'r';
-    map['item_quantity'] = '_itemQuantity';
-    map['weight'] = '_weight';
-    map['img_url'] = '_imgUrl';
-    map['id'] = '1';*/
-    print('ENTRE EN UPDATE');
-
-    /*int count = await  db.update("cart_table", map, where: 'id = ?', whereArgs: []);
-    print('ROWS: $count');*/
-
-    print('cartTable: $cartTable');
-    print('ID: ${cartTableUpdate.id.toInt()}');
-    // Update some record
     int count = await db.rawUpdate(
-        'UPDATE cart_table SET state = ? WHERE id = ?',
-        ['inactive', '2']).whenComplete(() => print('termine'));
-    print('updated: $count');
-
-    List<Map> list = await db.rawQuery('SELECT * FROM cart_table WHERE state = "active" ');
-    print(list.length);
+        'UPDATE cart_table SET state = ?',
+        ['active']);
 
     return count;
-    //return await  db.update("cart_table", map, where: 'id = ?', whereArgs: [map['id']]);
   }
 
-  /*Future<int> updateCartActiveItems(List<CartTable> cartTableList) async{
+  Future<int> updateCartItemState(List<CartTable> cartTableList, String state) async{
     Database db = await this.database;
-    print('UPDATE DB ANTES: ${cartTableList[1].state}');
-    //var result = await  db.update("$cartTable", cartTable.toMap(), where: 'id = ?', whereArgs: [cartTable.id]);
     int counter = 0;
+
     cartTableList.forEach((cartTableUpdate) async{
-        cartTableUpdate.state = 'inactive';
-        print('UPDATE DB DESPUES: ${cartTableUpdate.state}');
+        cartTableUpdate.state = state;
         counter = counter + await db.update("$cartTable", cartTableUpdate.toMap(), where: 'id=?', whereArgs: [cartTableUpdate.id]);
     });
 
-    print('COUNTER: $counter');
     return counter;
-  }*/
+  }
 
 }
