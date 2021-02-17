@@ -174,5 +174,31 @@ class DatabaseHelper {
     return count;
   }
 
+  Future<List<OrderTable>> getOrders() async {
+    Database db = await this.database;
+    var result =await  db.query("$orderTableName");
+
+    var list = List<OrderTable>();
+
+    result.forEach((element) {
+      list.add(OrderTable.fromMapObject(element));
+    });
+
+    return list;
+  }
+
+  Future<List<OrderItemsTable>> getOrderItems(String orderId) async {
+    Database db = await this.database;
+    var result =await  db.query("$orderItemsTableName", where: "order_id = ?", whereArgs: [orderId]);
+
+    var list = List<OrderItemsTable>();
+
+    result.forEach((element) {
+      list.add(OrderItemsTable.fromMapObject(element));
+    });
+
+    return list;
+  }
+
 
 }

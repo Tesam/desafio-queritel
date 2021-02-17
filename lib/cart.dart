@@ -16,7 +16,7 @@ class _CartState extends State<Cart> {
   void initState() {
     super.initState();
     loadCartItems();
-    //databaseHelper.activeCartItems(); //just to active all the items in the cart, for tests.
+    databaseHelper.activeCartItems(); //just to active all the items in the cart, for tests.
   }
 
   @override
