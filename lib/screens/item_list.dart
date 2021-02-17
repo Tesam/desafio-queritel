@@ -1,6 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:desafio_queritel/logic/cart_item_provider.dart';
-import 'package:desafio_queritel/screens/orders.dart';
+import 'package:desafio_queritel/screens/order_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:desafio_queritel/screens/cart.dart';
 import 'package:desafio_queritel/components/item_card.dart';
@@ -87,7 +87,7 @@ class _ItemListState extends State<ItemList> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Orders(),
+                        builder: (context) => OrderDetail(),
                       ),
                     );
                   },
