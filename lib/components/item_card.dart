@@ -1,6 +1,7 @@
+import 'package:desafio_queritel/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class ItemCard extends StatelessWidget {
+class ItemCard extends StatefulWidget {
   /// Creates a card for product
 
   /// [category]
@@ -10,7 +11,7 @@ class ItemCard extends StatelessWidget {
   /// [weight_label]
   /// [pic_url]
   /// [price]
-  ///
+
   final String category;
   final String brand;
   final String title;
@@ -35,6 +36,27 @@ class ItemCard extends StatelessWidget {
       : super(key: key);
 
   @override
+  _ItemCardState createState() => _ItemCardState();
+}
+
+class _ItemCardState extends State<ItemCard> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _decrementCounter() {
+    setState(() {
+      if (_counter > 0) {
+        _counter--;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -45,7 +67,7 @@ class ItemCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
-                Radius.circular(15),
+                Radius.circular(24),
               ),
             ),
             child: Column(
@@ -55,7 +77,7 @@ class ItemCard extends StatelessWidget {
                   child: Container(
                     height: 150,
                     child: Image.network(
-                      pic_url,
+                      widget.pic_url,
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -64,14 +86,38 @@ class ItemCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     RaisedButton(
-                      onPressed: () {},
-                      child: const Text('0', style: TextStyle(fontSize: 20)),
-                    ),
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.remove,
+                                color: TEXT,
+                              ),
+                              onPressed: () {
+                                _decrementCounter();
+                              },
+                            ),
+                            Text(_counter.toString(),
+                                style: TextStyle(fontSize: 20)),
+                            IconButton(
+                              icon: Icon(
+                                Icons.add,
+                                color: TEXT,
+                              ),
+                              onPressed: () {
+                                _incrementCounter();
+                              },
+                            ),
+                          ],
+                        )),
                     SizedBox(width: 50), // give it width
                     RaisedButton(
                       onPressed: () {},
-                      child: const Text('Add to cart',
-                          style: TextStyle(fontSize: 20)),
+                      child: const Text(
+                        'Add to cart',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ],
                 ),
@@ -81,10 +127,10 @@ class ItemCard extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        title,
+                        widget.title,
                         style: TextStyle(
                           fontSize: 18,
-                          color: Color(0xFF191A32),
+                          color: TEXT,
                         ),
                       ),
                     ),
@@ -94,11 +140,11 @@ class ItemCard extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'USD ' + price,
+                        'USD ' + widget.price,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF191A32),
+                          color: TEXT,
                         ),
                       ),
                     ),
@@ -108,7 +154,7 @@ class ItemCard extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        category,
+                        widget.category,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
