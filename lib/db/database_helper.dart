@@ -47,7 +47,7 @@ class DatabaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
 
     String path = join(directory.path, "assets/db/" + dbName);
-    // await deleteDatabase(path);
+    //await deleteDatabase(path);
 
     // Check if the database exists
     var exists = await databaseExists(path);
@@ -110,10 +110,30 @@ class DatabaseHelper {
     return count;
   }
 
+  Future<int> getCartItem(String id) async {
+    Database db = await this.database;
+
+    var result = await db.query("$cartTableName",
+        where: "id = ?", whereArgs: [id]);
+
+    return result.length;
+
+  }
+
   Future<int> addCartItem(CartTable cartTable) async {
     Database db = await this.database;
 
-    return await db.insert("$cartTableName", cartTable.toMap());
+    Future<int> result = getCartItem(cartTable.id.toString());
+    result.then((value) {
+      if(value > 0){
+        //update
+        return db.update("$cartTableName", cartTable.toMap(), where: 'id=?', whereArgs: [cartTable.id]);
+      }else{
+        //insert
+        return db.insert("$cartTableName", cartTable.toMap());
+      }
+    });
+
   }
 
   Future<int> updateCartItemState(
