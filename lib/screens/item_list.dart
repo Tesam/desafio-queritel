@@ -1,3 +1,5 @@
+import 'package:desafio_queritel/db/database_helper.dart';
+import 'package:desafio_queritel/models/cart_table.dart';
 import 'package:desafio_queritel/screens/cart.dart';
 import 'package:desafio_queritel/components/item_card.dart';
 import 'package:desafio_queritel/logic/bloc.dart';
@@ -11,11 +13,14 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   final bloc = Block();
+  DatabaseHelper databaseHelper = DatabaseHelper();
 
   @override
   void initState() {
     super.initState();
     bloc.requestProducts();
+    Future<List<CartTable>> itemsInCart = databaseHelper.getCartItems('active');
+    print(itemsInCart);
   }
 
   Widget build(BuildContext context) {
